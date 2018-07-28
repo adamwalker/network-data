@@ -58,7 +58,7 @@ vlanEthertype = 0x8100
 instance Serialize EthernetHeader where
   put (EthernetHdr dst src vt ty) = do put dst
                                        put src
-                                       maybe (return ()) put vt
+                                       maybe (return ()) (\vlanTag -> put vlanEthertype *> put vlanTag) vt
                                        putWord16be ty
   get = do dst <- get
            src <- get
